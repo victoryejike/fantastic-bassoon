@@ -1,0 +1,52 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  CASHIER
+  KITCHEN_SUPERVISOR
+  AUDIT_ASSISTANT
+  ORDER_PROCESSOR
+}
+
+type customer {
+  name String
+  phoneNumber String
+}
+
+type orderInfo {
+  breakfast String
+}
+
+model User {
+  id  String    @id @default(auto()) @map("_id") @db.ObjectId
+  username String?
+  email String?   @unique
+  role Role
+  location String
+  hashedPassword String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  customer_info customer
+  order_info orderInfo
+}
+
+model Locations {
+  id  String    @id @default(auto()) @map("_id") @db.ObjectId // the primary id of the location field, auto genrates the value, maps it to the _id column in mongodb and firld type is object id
+  name String   @unique // sets a unique constraint for this field.
+}
