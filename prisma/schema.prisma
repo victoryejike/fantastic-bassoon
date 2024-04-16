@@ -29,7 +29,7 @@ type orderInfo {
 
 type MenuItem {
   item      String
-  price     Decimal
+  price     Float
   quantity  Int
 }
 
