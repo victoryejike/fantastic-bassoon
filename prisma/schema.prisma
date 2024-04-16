@@ -13,20 +13,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  CASHIER
-  KITCHEN_SUPERVISOR
-  AUDIT_ASSISTANT
-  ORDER_PROCESSOR
-}
-
-type customer {
+type CustomerInfo {
   name String
   phoneNumber String
 }
 
 type orderInfo {
-  breakfast String
+  breakfast MenuItem
+  additional_item MenuItem
+  main_menu MenuItem
+  drinks MenuItem
+  protein MenuItem
+  wait_time Float
+}
+
+type MenuItem {
+  item      String
+  price     Decimal
+  quantity  Int
+}
+
+enum Role {
+  CASHIER
+  KITCHEN_SUPERVISOR
+  AUDIT_ASSISTANT
+  ORDER_PROCESSOR
+  ADMIN
 }
 
 model User {
@@ -42,7 +54,7 @@ model User {
 
 model Order {
   id String @id @default(auto()) @map("_id") @db.ObjectId
-  customer_info customer
+  customer_info CustomerInfo
   order_info orderInfo
 }
 
